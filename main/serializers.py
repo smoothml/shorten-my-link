@@ -9,4 +9,4 @@ class UrlsSerializer(serializers.ModelSerializer):
         """Meta class to map serializer's fields with the model fields."""
         model = Urls
         fields = ('id', 'url', 'pub_date', 'count')
-        read_only_fields = ('pub_date', 'count')
+        read_only_fields = ('id', 'pub_date', 'count')
