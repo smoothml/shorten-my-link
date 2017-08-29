@@ -1,0 +1,26 @@
+{
+  "name": "knowledge-engine",
+  "scripts": {
+    "postdeploy": "python manage.py migrate --noinput"
+  },
+  "formation": {},
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "env": {
+    "DATABASE_URL": {
+      "required": true
+    }
+  },
+  "environments": {
+    "test": {
+      "scripts": {
+        "test-setup": "python manage.py migrate --noinput",
+        "test": "python manage.py test"
+      }
+    }
+  }
+}
