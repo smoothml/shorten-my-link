@@ -21,6 +21,15 @@ class UrlsTestCase(TestCase):
         new_count = Urls.objects.count()
         self.assertEqual(new_count - old_count, 1)
 
+    def test_model_can_return_shortened_url(self):
+        """Test the Urls model can return the shortened url."""
+        long_url = 'http://batman.com'
+        url = Urls(url=long_url)
+        url.save()
+
+        shortened_url = url.shortened_url()
+        self.assertEqual('https://shorten-my-link.herokuapp.com/{}'.format(url.id), shortened_url)
+
 
 class ViewTestCase(TestCase):
     """Test suite for the api views."""
