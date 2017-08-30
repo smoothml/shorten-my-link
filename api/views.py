@@ -1,13 +1,18 @@
-from rest_framework import generics
+import os
+
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from .serializers import UrlsSerializer
-from .models import Urls
+
+APP_BASE_URL = 'https://shorten-my-link.herokuapp.com'
 
 
-class CreateView(generics.ListCreateAPIView):
-    """This class defines the create behavior of our rest api."""
-    queryset = Urls.objects.all()
-    serializer_class = UrlsSerializer
-
-    def perform_create(self, serializer):
-        """Save the post data when creating a new bucketlist."""
+@api_view(['POST'])
+def create_short_url(request):
+    serializer = UrlsSerializer(data=request.data)
+    if serializer.is_valid():
         serializer.save()
+        return Response({'shortened_url': os.path.join(APP_BASE_URL, serializer.data['id'])},
+                        status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

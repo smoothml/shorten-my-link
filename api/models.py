@@ -1,8 +1,5 @@
 from django.db import models
 import shortuuid
-import os
-
-APP_BASE_URL = 'https://shorten-my-link.herokuapp.com'
 
 
 class Urls(models.Model):
@@ -13,6 +10,3 @@ class Urls(models.Model):
 
     def __str__(self):
         return self.url
-
-    def shortened_url(self):
-        return os.path.join(APP_BASE_URL, self.id)
