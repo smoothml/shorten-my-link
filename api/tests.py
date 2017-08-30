@@ -10,16 +10,26 @@ from .models import Urls
 class UrlsTestCase(TestCase):
     """This class defines the test suite for the Urls model."""
 
+    def setUp(self):
+        self.long_url = 'http://batman.com'
+
     def test_model_can_create_shortened_url(self):
         """Test the Urls model can create a short url."""
         old_count = Urls.objects.count()
 
-        long_url = 'http://batman.com'
-        url = Urls(url=long_url)
+        url = Urls(url=self.long_url)
         url.save()
 
         new_count = Urls.objects.count()
         self.assertEqual(new_count - old_count, 1)
+
+    def test_model_can_return_shortened_url(self):
+        """Test the Urls model can return the shortened url."""
+        url = Urls(url=self.long_url)
+        url.save()
+
+        shortened_url = url.shortened_url()
+        self.assertEqual('https://shorten-my-link.herokuapp.com/{}'.format(url.id), shortened_url)
 
 
 class ViewTestCase(TestCase):
