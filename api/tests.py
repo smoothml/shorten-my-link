@@ -10,12 +10,14 @@ from .models import Urls
 class UrlsTestCase(TestCase):
     """This class defines the test suite for the Urls model."""
 
+    def setUp(self):
+        self.long_url = 'http://batman.com'
+
     def test_model_can_create_shortened_url(self):
         """Test the Urls model can create a short url."""
         old_count = Urls.objects.count()
 
-        long_url = 'http://batman.com'
-        url = Urls(url=long_url)
+        url = Urls(url=self.long_url)
         url.save()
 
         new_count = Urls.objects.count()
@@ -23,8 +25,7 @@ class UrlsTestCase(TestCase):
 
     def test_model_can_return_shortened_url(self):
         """Test the Urls model can return the shortened url."""
-        long_url = 'http://batman.com'
-        url = Urls(url=long_url)
+        url = Urls(url=self.long_url)
         url.save()
 
         shortened_url = url.shortened_url()
