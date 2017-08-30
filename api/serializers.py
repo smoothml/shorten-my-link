@@ -8,4 +8,4 @@ class UrlsSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Urls
-        fields = ('shortened_url', )
+        fields = ('id', 'url', 'pub_date')

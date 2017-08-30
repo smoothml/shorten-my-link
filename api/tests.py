@@ -1,3 +1,5 @@
+import os
+
 from django.test import TestCase
 
 from rest_framework.test import APIClient
@@ -5,6 +7,7 @@ from rest_framework import status
 from django.core.urlresolvers import reverse
 
 from .models import Urls
+from .views import APP_BASE_URL
 
 
 class UrlsTestCase(TestCase):
@@ -22,14 +25,6 @@ class UrlsTestCase(TestCase):
 
         new_count = Urls.objects.count()
         self.assertEqual(new_count - old_count, 1)
-
-    def test_model_can_return_shortened_url(self):
-        """Test the Urls model can return the shortened url."""
-        url = Urls(url=self.long_url)
-        url.save()
-
-        shortened_url = url.shortened_url()
-        self.assertEqual('https://shorten-my-link.herokuapp.com/{}'.format(url.id), shortened_url)
 
 
 class ViewTestCase(TestCase):
