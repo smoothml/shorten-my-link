@@ -15,7 +15,7 @@ APP_BASE_URL = 'https://shorten-my-link.herokuapp.com'
 @api_view(['POST'])
 def create_short_url(request):
     try:
-        existing_url = Urls.objects.get(url=request.data.url)
+        existing_url = Urls.objects.get(url=request.data['url'])
         return Response({'shortened_url': os.path.join(APP_BASE_URL, existing_url.id)},
                         status=status.HTTP_201_CREATED)
     except:

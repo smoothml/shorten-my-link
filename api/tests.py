@@ -49,3 +49,14 @@ class ViewTestCase(TestCase):
             reverse('redirect', kwargs={'short_id': short_id}),
         )
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+
+    def test_api_wont_create_new_link_for_existing_url(self):
+        second_response = self.client.post(
+            reverse('create'),
+            self.url_data,
+            format="json"
+        )
+
+        self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(
+            self.response.data['shortened_url'], second_response.data['shortened_url'])
