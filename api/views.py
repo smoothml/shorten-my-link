@@ -14,11 +14,16 @@ APP_BASE_URL = 'https://shorten-my-link.herokuapp.com'
 
 @api_view(['POST'])
 def create_short_url(request):
-    serializer = UrlsSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response({'shortened_url': os.path.join(APP_BASE_URL, serializer.data['id'])},
+    try:
+        existing_url = Urls.objects.get(url=request.data.url)
+        return Response({'shortened_url': os.path.join(APP_BASE_URL, existing_url.id)},
                         status=status.HTTP_201_CREATED)
+    except:
+        serializer = UrlsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'shortened_url': os.path.join(APP_BASE_URL, serializer.data['id'])},
+                            status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
