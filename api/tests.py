@@ -1,5 +1,3 @@
-import os
-
 from django.test import TestCase
 
 from rest_framework.test import APIClient
@@ -7,7 +5,6 @@ from rest_framework import status
 from django.core.urlresolvers import reverse
 
 from .models import Urls
-from .views import APP_BASE_URL
 
 
 class UrlsTestCase(TestCase):
@@ -37,8 +34,18 @@ class ViewTestCase(TestCase):
         self.response = self.client.post(
             reverse('create'),
             self.url_data,
-            format="json")
+            format="json"
+        )
 
     def test_api_can_create_a_short_url(self):
         """Test the api can create short url."""
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
+
+    def test_api_can_redirect_to_long_url(self):
+        """Test the api can redirect to the original long url."""
+        long_url = self.response.data['shortened_url']
+        short_id = long_url.split('/')[-1]
+        response = self.client.get(
+            reverse('redirect', kwargs={'short_id': short_id}),
+        )
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
