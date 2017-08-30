@@ -3,7 +3,7 @@ from .models import Urls
 
 
 class UrlsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'url', 'pub_date', 'count')
+    list_display = ('id', 'url', 'pub_date')
     ordering = ('-pub_date',)
 
 
