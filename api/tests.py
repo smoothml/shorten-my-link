@@ -36,10 +36,26 @@ class ViewTestCase(TestCase):
             self.url_data,
             format="json"
         )
+        self.bad_url_data_1 = {'massive_fail': 'http://batman.com'}
+        self.bad_response_1 = self.client.post(
+            reverse('create'),
+            self.bad_url_data_1,
+            format="json"
+        )
+        self.bad_url_data_2 = {'url': 'massive_fail'}
+        self.bad_response_2 = self.client.post(
+            reverse('create'),
+            self.bad_url_data_2,
+            format="json"
+        )
 
     def test_api_can_create_a_short_url(self):
         """Test the api can create short url."""
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.bad_response_1.status_code,
+                         status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(self.bad_response_2.status_code,
+                         status.HTTP_400_BAD_REQUEST)
 
     def test_api_can_redirect_to_long_url(self):
         """Test the api can redirect to the original long url."""
@@ -48,4 +64,19 @@ class ViewTestCase(TestCase):
         response = self.client.get(
             reverse('redirect', kwargs={'short_id': short_id}),
         )
+        bad_response = self.client.get(
+            reverse('redirect', kwargs={'short_id': "rubbish"}),
+        )
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        self.assertEqual(bad_response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_api_wont_create_new_link_for_existing_url(self):
+        second_response = self.client.post(
+            reverse('create'),
+            self.url_data,
+            format="json"
+        )
+
+        self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(
+            self.response.data['shortened_url'], second_response.data['shortened_url'])
