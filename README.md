@@ -28,3 +28,8 @@ This API is currently written as a Python [Django](https://www.djangoproject.com
 6. Use [Memcached](https://memcached.org/) for caching recently created short urls.
 
 An entirely different approach to scaling is to write the API as a set of functions to run as part of a serverless architecture, for example using [AWS Lambda](https://aws.amazon.com/lambda/).
+
+## To Do
+* Add more throrough logging and monitoring.
+* Add more comprehensive error handling - the API is not handling some edge cases correctly at the moment.
+* Add separate deployment configurations for production and developement environments.
