@@ -1,8 +1,5 @@
 {
   "name": "knowledge-engine",
-  "scripts": {
-    "postdeploy": "python manage.py migrate --noinput"
-  },
   "formation": {},
   "addons": [],
   "buildpacks": [
