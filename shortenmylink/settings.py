@@ -80,13 +80,13 @@ WSGI_APPLICATION = 'shortenmylink.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'shortenmylink',
+        'NAME': 'development',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'PASSWORD': 'password',
+        'PASSWORD': os.environ.get('PGPASSWORD', 'password'),
         'HOST': 'localhost',
-        'PORT': 15432,
-        'USER': 'batman',
-     }
+        'PORT': os.environ.get('PGPORT', 5432),
+        'USER': os.environ.get('PGUSER', 'batman'),
+    }
 }
 
 if os.environ.get("DATABASE_URL"):
